@@ -1,36 +1,49 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
+@Entity()
 export class Movie {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
+    @ApiProperty()
     id: number
 
     @Column()
+    @ApiProperty()
     title: string
 
     @Column()
+    @ApiProperty()
     description: string
 
     @Column({enum: ['Movie', 'TV show']})
+    @ApiProperty()
     type: string
 
     @Column()
+    @ApiProperty()
     tagline: string
 
     @Column()
+    @ApiProperty()
     poster: string
 
     @Column()
+    @ApiProperty()
     backdrop: string
 
-    @Column({array: true})
+    @Column('simple-array')
+    @ApiProperty()
     genres: string[]
 
-    @Column()
+    @Column("timestamptz")
+    @ApiProperty()
     date: Date
 
-    @Column()
+    @Column('float')
+    @ApiProperty()
     rating: number
 
-    @Column()
+    @Column('int')
+    @ApiProperty()
     runtime: number
 }

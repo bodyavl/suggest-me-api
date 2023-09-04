@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap, OnModuleInit } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './entities';
+import { ThemoviedbService } from '../themoviedb/themoviedb.service';
 
 @Injectable()
-export class MovieService {
+export class MovieService implements OnModuleInit {
   constructor(
     @InjectRepository(Movie) private moviesRepository: Repository<Movie>,
+    private themoviedb: ThemoviedbService,
   ) {}
   create(createMovieDto: CreateMovieDto) {
     return 'This action adds a new movie';
@@ -18,6 +20,7 @@ export class MovieService {
     return `This action returns all movie`;
   }
 
+  
   findOne(id: number) {
     return this.moviesRepository.findOneBy({
       id,
@@ -30,5 +33,9 @@ export class MovieService {
 
   remove(id: number) {
     return `This action removes a #${id} movie`;
+  }
+
+  onModuleInit() {
+    this.themoviedb.runBackgroundFetching(this.moviesRepository);
   }
 }
