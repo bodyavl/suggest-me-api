@@ -14,7 +14,6 @@ export class ThemoviedbService {
     setTimeout(addMoviesToDb, FETCHINGDELAY, 1);
 
     async function addMoviesToDb(pageIteration = 1) {
-      console.log('erer');
       if (pageIteration > 20000) return;
       for (let i = 1; i < pageIteration + iterationCount; i++) {
         const movieRes = await axios.get(
@@ -72,7 +71,7 @@ export class ThemoviedbService {
               await movieRepository.save(newMovie);
             }
           } catch (error) {
-            if (error.code !== '23502') console.log(error);
+            if (error.code !== '23502') console.log(error.code);
           }
         }
         const tvRes = await axios.get(
@@ -129,7 +128,7 @@ export class ThemoviedbService {
               await movieRepository.save(newTV);
             }
           } catch (error) {
-            if (error.code !== '23502') console.log(error);
+            if (error.code !== '23502') console.log(error.code);
           }
         }
       }

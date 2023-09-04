@@ -1,23 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Movie } from './entities';
+import { NotFoundError } from 'rxjs';
 
 
 
 @ApiTags('movie')
+@ApiInternalServerErrorResponse()
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
   
+  @ApiOkResponse({type: Movie, isArray: true, description: 'array of 8 movies'})
   @Get()
   async findAll() {
     return await this.movieService.findAll();
   }
 
-  @ApiOkResponse({type: Movie})
+  @ApiOkResponse({type: Movie, description: 'Movie object'})
+  @ApiNotFoundResponse({description: 'movie not found under provided id'})
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.movieService.findOne(+id);
