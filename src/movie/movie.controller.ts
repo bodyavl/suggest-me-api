@@ -19,8 +19,8 @@ export class MovieController {
 
   
   @Get()
-  findAll() {
-    return this.movieService.findAll();
+  async findAll() {
+    return await this.movieService.findAll();
   }
 
   @ApiOkResponse({type: Movie})

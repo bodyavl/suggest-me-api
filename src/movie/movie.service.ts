@@ -16,8 +16,14 @@ export class MovieService implements OnModuleInit {
     return 'This action adds a new movie';
   }
 
-  findAll() {
-    return `This action returns all movie`;
+  async findAll() {
+    const randomMovies = this.moviesRepository
+      .createQueryBuilder('movie')
+      .select(['movie.id', 'movie.title', 'movie.poster', 'movie.genres', 'movie.type', 'movie.rating'])
+      .orderBy('RANDOM()')
+      .take(8)
+      .getMany();
+    return await randomMovies;
   }
 
   
