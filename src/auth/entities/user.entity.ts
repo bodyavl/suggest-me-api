@@ -10,4 +10,7 @@ export class User {
 
     @Column()
     hash: string
+
+    @Column()
+    name: string
 }
