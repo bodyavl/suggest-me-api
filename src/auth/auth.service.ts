@@ -37,15 +37,15 @@ export class AuthService {
     });
     if (userExists)
       throw new BadRequestException('User with provided email already exists');
-    const stat = this.statRepository.create({})
-    await this.statRepository.save(stat)
+    
     const user = this.userRepository.create({
       email: dto.email,
       name: dto.name,
       hash,
-      stat: stat
     });
     await this.userRepository.save(user);
+    const stat = this.statRepository.create({user})
+    await this.statRepository.save(stat)
     const tokens = await this.signTokens(user.id, user.email);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
 

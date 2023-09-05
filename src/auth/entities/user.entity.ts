@@ -18,8 +18,4 @@ export class User {
 
     @Column('text', { array: true, default: []})
     refresh_tokens: string[]
-
-    @OneToOne(() => Stat)
-    @JoinColumn()
-    stat: Stat
 }

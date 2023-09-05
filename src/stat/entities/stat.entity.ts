@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "../../auth/entities";
 
 @Entity()
@@ -17,5 +17,9 @@ export class Stat {
 
     @Column({default: 0})
     man_suggestions: number
+
+    @OneToOne(() => User, {onDelete: 'CASCADE'})
+    @JoinColumn()
+    user: User
 
 }
