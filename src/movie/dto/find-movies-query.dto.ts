@@ -1,4 +1,4 @@
-import { IsBoolean, IsBooleanString, IsOptional, IsString } from "class-validator";
+import { IsBooleanString, IsOptional, IsString } from "class-validator";
 
 export class FindMoviesQueryDto {
     @IsBooleanString()
