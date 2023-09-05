@@ -10,11 +10,13 @@ import { User } from './entities';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
+import { Stat } from '../stat/entities';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Stat) private statRepository: Repository<Stat>,
     private jwt: JwtService,
   ) {}
 
@@ -35,10 +37,13 @@ export class AuthService {
     });
     if (userExists)
       throw new BadRequestException('User with provided email already exists');
+    const stat = this.statRepository.create({})
+    await this.statRepository.save(stat)
     const user = this.userRepository.create({
       email: dto.email,
       name: dto.name,
       hash,
+      stat: stat
     });
     await this.userRepository.save(user);
     const tokens = await this.signTokens(user.id, user.email);

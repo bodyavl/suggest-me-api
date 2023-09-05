@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStatDto } from './dto/create-stat.dto';
-import { UpdateStatDto } from './dto/update-stat.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Stat } from './entities';
+import { Repository } from 'typeorm';
+
 
 @Injectable()
 export class StatService {
+  constructor(@InjectRepository(Stat) private statRepository: Repository<Stat>){}
 
+  
   findOne(id: number) {
-    return `This action returns a #${id} stat`;
+    return this.statRepository.findOneBy({id});
   }
 }

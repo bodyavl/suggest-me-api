@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UseGuards } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Movie } from './entities';
 import { NotFoundError } from 'rxjs';
+import { OptionalAccessTokenGuard } from '../auth/guard';
 
 
 
@@ -13,6 +14,7 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
   
   @ApiOkResponse({type: Movie, isArray: true, description: 'array of 8 movies'})
+  @UseGuards(OptionalAccessTokenGuard)
   @Get()
   async findAll() {
     return await this.movieService.findAll();

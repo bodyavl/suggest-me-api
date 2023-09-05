@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtTokens } from './auth.types';
 import { GetUser } from './decorators';
 import { RefreshTokenGuard } from './guard';
@@ -13,17 +13,21 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiCreatedResponse({type: JwtTokens})
+  @ApiForbiddenResponse({description: 'when provided credentials are wrong or taken'})
   @Post('signin')
   async signIn(@Body() dto: SignInDto) {
     return this.authService.signIn(dto)
   }
 
   @ApiOkResponse({type: JwtTokens})
+  @ApiBadRequestResponse({description: 'when user with provided email exists'})
   @Post('signup')
   async signUp(@Body() dto: SignUpDto){
     return this.authService.signUp(dto)
   }
 
+  @ApiOkResponse({type: JwtTokens})
+  @ApiForbiddenResponse({description: 'If refresh token is not valid'})
   @UseGuards(RefreshTokenGuard)
   @Post('tokens')
   async updateTokens(

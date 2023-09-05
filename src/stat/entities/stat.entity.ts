@@ -1,19 +1,21 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../../auth/entities";
 
 @Entity()
 export class Stat {
     @PrimaryGeneratedColumn()
-    id: string
+    id: number
     
-    @Column()
+    @Column({default: 0})
     movies: number
 
-    @Column()
+    @Column({default: 0})
     tv_shows: number
 
-    @Column()
+    @Column({default: 0})
     suggestions: number
 
-    @Column()
+    @Column({default: 0})
     man_suggestions: number
+
 }
