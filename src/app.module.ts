@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ThemoviedbModule } from './themoviedb/themoviedb.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { StatModule } from './stat/stat.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       autoLoadEntities: true
     }),
+    StatModule,
   ],
 })
 export class AppModule {}
