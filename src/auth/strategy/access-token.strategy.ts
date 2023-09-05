@@ -1,6 +1,5 @@
-import { Strategy } from "passport-strategy";
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt } from "passport-jwt";
+import { ExtractJwt, Strategy } from "passport-jwt";
 
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'access-jwt') {
     constructor() {

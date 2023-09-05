@@ -13,4 +13,7 @@ export class User {
 
     @Column()
     name: string
+
+    @Column('text', { array: true, default: []})
+    refresh_tokens: string[]
 }

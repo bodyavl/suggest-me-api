@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtTokens } from './auth.types';
+import { GetUser } from './decorators';
+import { RefreshTokenGuard } from './guard';
 
 
 @ApiTags('auth')
@@ -20,5 +22,14 @@ export class AuthController {
   @Post('signup')
   async signUp(@Body() dto: SignUpDto){
     return this.authService.signUp(dto)
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('tokens')
+  async updateTokens(
+    @GetUser('id') id: number,
+    @GetUser('refresh_token') refresh_token: string,
+  ) {
+    return this.authService.updateTokens(id, refresh_token);
   }
 }
