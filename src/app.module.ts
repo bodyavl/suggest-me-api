@@ -5,6 +5,7 @@ import { ThemoviedbModule } from './themoviedb/themoviedb.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatModule } from './stat/stat.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { StatModule } from './stat/stat.module';
       autoLoadEntities: true
     }),
     StatModule,
+    UserModule,
   ],
 })
 export class AppModule {}

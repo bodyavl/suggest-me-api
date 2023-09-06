@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtTokens } from './auth.types';
 import { GetUser } from './decorators';
 import { RefreshTokenGuard } from './guard';
@@ -28,6 +28,7 @@ export class AuthController {
 
   @ApiOkResponse({type: JwtTokens})
   @ApiForbiddenResponse({description: 'If refresh token is not valid'})
+  @ApiBearerAuth('refresh token')
   @UseGuards(RefreshTokenGuard)
   @Post('tokens')
   async updateTokens(

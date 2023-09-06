@@ -6,7 +6,7 @@ import {
 import { SignInDto, SignUpDto } from './dto';
 import { JwtTokens } from './auth.types';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities';
+import { User } from '../user/entities';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
