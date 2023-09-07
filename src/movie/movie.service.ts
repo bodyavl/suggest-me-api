@@ -44,7 +44,7 @@ export class MovieService implements OnModuleInit {
 
     for (let movie of randomMovies) {
       if (movie.type === 'Movie') movies++;
-      if (movie.type === 'TV Show') tv_shows++;
+      if (movie.type === 'TV show') tv_shows++;
     }
     if (isManual) man_suggestions++;
     else suggestions++;
