@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -30,7 +30,7 @@ export class AuthController {
   @ApiForbiddenResponse({description: 'If refresh token is not valid'})
   @ApiBearerAuth('refresh token')
   @UseGuards(RefreshTokenGuard)
-  @Post('tokens')
+  @Get('tokens')
   async updateTokens(
     @GetUser('id') id: number,
     @GetUser('refresh_token') refresh_token: string,

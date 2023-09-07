@@ -14,7 +14,7 @@ export class ThemoviedbService {
     setTimeout(addMoviesToDb, FETCHINGDELAY, 1);
 
     async function addMoviesToDb(pageIteration = 1) {
-      if (pageIteration > 20000) return;
+      if (pageIteration > 500) return;
       for (let i = 1; i < pageIteration + iterationCount; i++) {
         const movieRes = await axios.get(
           'https://api.themoviedb.org/3/discover/movie',
