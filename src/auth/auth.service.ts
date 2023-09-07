@@ -20,7 +20,7 @@ export class AuthService {
     private jwt: JwtService,
   ) {}
 
-  async signIn(dto: SignInDto) {
+  async signIn(dto: SignInDto): Promise<JwtTokens> {
     const user = await this.userRepository.findOneBy({ email: dto.email });
     if (!user) throw new ForbiddenException('No user with provided email');
     const isMatch = await argon.verify(user.hash, dto.password);
@@ -30,7 +30,7 @@ export class AuthService {
     return tokens;
   }
 
-  async signUp(dto: SignUpDto) {
+  async signUp(dto: SignUpDto): Promise<JwtTokens> {
     const hash = await argon.hash(dto.password);
     const userExists = await this.userRepository.findOneBy({
       email: dto.email,
@@ -72,7 +72,7 @@ export class AuthService {
     return { access_token, refresh_token };
   }
 
-  async updateTokens(id: number, refresh_token: string) {
+  async updateTokens(id: number, refresh_token: string): Promise<JwtTokens> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user || !user.refresh_tokens)
       throw new ForbiddenException('Access Denied');
