@@ -71,7 +71,7 @@ export class ThemoviedbService {
               await movieRepository.save(newMovie);
             }
           } catch (error) {
-            if (error.code !== '23502') console.log(error.code);
+            if (error.code !== '23502') {};
           }
         }
         const tvRes = await axios.get(
@@ -128,7 +128,7 @@ export class ThemoviedbService {
               await movieRepository.save(newTV);
             }
           } catch (error) {
-            if (error.code !== '23502') console.log(error.code);
+            if (error.code !== '23502') {};
           }
         }
       }
