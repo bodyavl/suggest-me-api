@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -14,6 +14,7 @@ export class AuthController {
 
   @ApiCreatedResponse({type: JwtTokens})
   @ApiForbiddenResponse({description: 'when provided credentials are wrong or taken'})
+  @HttpCode(HttpStatus.OK)
   @Post('signin')
   async signIn(@Body() dto: SignInDto) {
     return this.authService.signIn(dto)

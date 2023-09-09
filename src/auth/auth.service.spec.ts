@@ -5,7 +5,6 @@ import { User } from '../user/entities';
 import { Stat } from '../stat/entities';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2'
-import passport from 'passport';
 
 describe('AuthService', () => {
   let service: AuthService;

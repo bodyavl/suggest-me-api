@@ -10,7 +10,6 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-    
   const config = new DocumentBuilder()
     .setTitle('Suggest me api')
     .setDescription('The api for sugget me website')
