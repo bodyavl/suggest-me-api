@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatModule } from './stat/stat.module';
 import { UserModule } from './user/user.module';
+import { dataSourceOptions } from '../db/data-source';
 
 @Module({
   imports: [
@@ -15,16 +16,7 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot(
       { isGlobal: true },
     ),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '123',
-      database: 'postgres',
-      synchronize: true,
-      autoLoadEntities: true
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     StatModule,
     UserModule,
   ],
