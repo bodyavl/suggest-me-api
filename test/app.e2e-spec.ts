@@ -6,7 +6,6 @@ import { DataSource } from 'typeorm';
 import { User } from '../src/user/entities';
 import { setTimeout } from "timers/promises"
 import { Movie } from '../src/movie/entities';
-import { Stat } from '../src/stat/entities';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
