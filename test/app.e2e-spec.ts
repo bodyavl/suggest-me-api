@@ -5,6 +5,8 @@ import { AppModule } from './../src/app.module';
 import { DataSource } from 'typeorm';
 import { User } from '../src/user/entities';
 import { setTimeout } from "timers/promises"
+import { Movie } from '../src/movie/entities';
+import { Stat } from '../src/stat/entities';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -33,9 +35,10 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
+  let access_token;
+  let refresh_token;
   describe('/auth', () => {
-    let access_token;
-    let refresh_token;
+    
     it('/signup', async () => {
       const res = await request(app.getHttpServer()).post('/auth/signup').send({
         email: 'test@gmail.com',
@@ -82,5 +85,20 @@ describe('AppController (e2e)', () => {
       expect(res.body).toBeInstanceOf(Array);
       expect(res.body).toHaveLength(8)
     });
+    it('/, with auth', async () => {
+      const res = await request(app.getHttpServer()).get('/movie').set('Authorization', `Bearer ${access_token}`);
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Array<Movie>);
+      expect(res.body).toHaveLength(8)
+    });
   });
+
+  describe('/user', () => {
+    it('/stat', async () => {
+      const res = await request(app.getHttpServer()).get('/user/stat').set('Authorization', `Bearer ${access_token}`);
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.suggestions).toBeGreaterThan(0);
+    })
+  })
 });
