@@ -64,6 +64,20 @@ describe('AppController (e2e)', () => {
       access_token = res.body.access_token;
       refresh_token = res.body.refresh_token;
     });
+    it('/signin, with wrong password', async () => {
+      const res = await request(app.getHttpServer()).post('/auth/signin').send({
+        email: 'test@gmail.com',
+        password: 'test1',
+      });
+      expect(res.statusCode).toEqual(403);
+    });
+    it('/signin, with wrong email', async () => {
+      const res = await request(app.getHttpServer()).post('/auth/signin').send({
+        email: 'test1@gmail.com',
+        password: 'test',
+      });
+      expect(res.statusCode).toEqual(403);
+    });
     it('/tokens', async () => {
       const res = await request(app.getHttpServer())
         .get('/auth/tokens')
@@ -76,9 +90,17 @@ describe('AppController (e2e)', () => {
       access_token = res.body.access_token;
       refresh_token = res.body.refresh_token;
     });
+    it('/tokens, with wrong token', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/auth/tokens')
+        .set('Authorization', `Bearer wrong_token`);
+      expect(res.statusCode).toEqual(401);
+      
+    });
   });
 
   describe('/movie', () => {
+    let movieId
     it('/, without auth', async () => {
       const res = await request(app.getHttpServer()).get('/movie');
       expect(res.statusCode).toEqual(200);
@@ -90,6 +112,12 @@ describe('AppController (e2e)', () => {
       expect(res.statusCode).toEqual(200);
       expect(res.body).toBeInstanceOf(Array<Movie>);
       expect(res.body).toHaveLength(8)
+      movieId = res.body[0].id
+    });
+    it('/:id', async () => {
+      const res = await request(app.getHttpServer()).get(`/movie/${movieId}`);
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Object);
     });
   });
 
