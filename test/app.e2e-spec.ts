@@ -50,6 +50,14 @@ describe('AppController (e2e)', () => {
         refresh_token: expect.any(String),
       });
     });
+    it('/signout', async () => {
+      const res = await request(app.getHttpServer()).post('/auth/signout').set("Authorization", `Bearer ${refresh_token}`);
+      expect(res.statusCode).toEqual(200);
+    });
+    it('/signout with wrong token', async () => {
+      const res = await request(app.getHttpServer()).post('/auth/signout').set("Authorization", `Bearer ${refresh_token}`);
+      expect(res.statusCode).toEqual(400);
+    });
     it('/signin', async () => {
       const res = await request(app.getHttpServer()).post('/auth/signin').send({
         email: 'test@gmail.com',
