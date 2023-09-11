@@ -113,6 +113,17 @@ describe('AppController (e2e)', () => {
       expect(res.body).toHaveLength(8)
       movieId = res.body[0].id
     });
+    it('/, with genre query', async () => {
+      const res = await request(app.getHttpServer()).get('/movie').query({
+        genre: 'Action'
+      });
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Array);
+      expect(res.body).toHaveLength(8)
+      for(let movie of res.body) {
+        expect(movie).toHaveProperty('genre', 'Action')
+      }
+    });
     it('/:id', async () => {
       const res = await request(app.getHttpServer()).get(`/movie/${movieId}`);
       expect(res.statusCode).toEqual(200);
