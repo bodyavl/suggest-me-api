@@ -18,7 +18,7 @@ export class MovieController {
   @UseGuards(OptionalAccessTokenGuard)
   @Get()
   async findAll(@GetUser('id') id: number, @Query() dto: FindMoviesQueryDto) {
-    const randomMovies = await this.movieService.findAll()
+    const randomMovies = await this.movieService.findAll(dto.genre)
     if(!id) return randomMovies;
     await this.movieService.updateStats(+id, randomMovies, dto.manual)
     return randomMovies;

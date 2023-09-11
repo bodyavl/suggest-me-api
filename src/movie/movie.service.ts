@@ -13,9 +13,11 @@ export class MovieService implements OnModuleInit {
     private themoviedb: ThemoviedbService,
   ) {}
 
-  async findAll() {
+  async findAll(genre: string) {
+    const where = genre ? 'movie.genres @> :genres' : ''
     const randomMovies = await this.movieRepository
       .createQueryBuilder('movie')
+      .where(where, {genres: [genre]})
       .select([
         'movie.id',
         'movie.title',
@@ -35,12 +37,11 @@ export class MovieService implements OnModuleInit {
     randomMovies: Movie[],
     isManual: boolean = false,
   ) {
-
     const stat = await this.statRepository.findOneBy({
-      user: {id: userId}
-    })
+      user: { id: userId },
+    });
 
-    let {movies, tv_shows, suggestions, man_suggestions} = stat;
+    let { movies, tv_shows, suggestions, man_suggestions } = stat;
 
     for (let movie of randomMovies) {
       if (movie.type === 'Movie') movies++;
@@ -49,11 +50,17 @@ export class MovieService implements OnModuleInit {
     if (isManual) man_suggestions++;
     else suggestions++;
 
-    const newStats = await this.statRepository.update({
-      user: {id: userId}
-    }, {
-      movies, tv_shows, suggestions, man_suggestions
-    })
+    const newStats = await this.statRepository.update(
+      {
+        user: { id: userId },
+      },
+      {
+        movies,
+        tv_shows,
+        suggestions,
+        man_suggestions,
+      },
+    );
     return newStats;
   }
 

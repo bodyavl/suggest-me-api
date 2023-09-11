@@ -31,7 +31,7 @@ export class Movie {
   @ApiProperty()
   backdrop: string;
 
-  @Column('simple-array')
+  @Column({type: 'text', array: true})
   @ApiProperty()
   genres: string[];
 

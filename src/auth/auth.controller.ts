@@ -1,7 +1,7 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { JwtTokens } from './auth.types';
 import { GetUser } from './decorators';
 import { RefreshTokenGuard } from './guard';
@@ -37,5 +37,14 @@ export class AuthController {
     @GetUser('refresh_token') refresh_token: string,
   ) {
     return this.authService.updateTokens(id, refresh_token);
+  }
+
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse()
+  @ApiBearerAuth('refresh token')
+  @UseGuards(RefreshTokenGuard)
+  @Delete('signout')
+  async signOut(@GetUser('id') id: number, @GetUser('refresh_token') refresh_token: string) {
+    return this.authService.signOut(id, refresh_token)
   }
 }

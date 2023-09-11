@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SignInDto, SignUpDto } from './dto';
 import { JwtTokens } from './auth.types';
@@ -37,19 +38,31 @@ export class AuthService {
     });
     if (userExists)
       throw new BadRequestException('User with provided email already exists');
-    
+
     const user = this.userRepository.create({
       email: dto.email,
       name: dto.name,
       hash,
     });
     await this.userRepository.save(user);
-    const stat = this.statRepository.create({user})
-    await this.statRepository.save(stat)
+    const stat = this.statRepository.create({ user });
+    await this.statRepository.save(stat);
     const tokens = await this.signTokens(user.id, user.email);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
 
     return tokens;
+  }
+
+  async signOut(id: number, refresh_token: string) {
+    const user = await this.userRepository.findOneBy({id})
+    if(!user.refresh_tokens.includes(refresh_token)) throw new UnauthorizedException('refresh token is not valid')
+    const updatedUser = await this.userRepository.update(
+      { id },
+      {
+        refresh_tokens: () =>
+          `array_remove("refresh_tokens", '${refresh_token}')`,
+      },
+    );
   }
 
   async signTokens(userId: number, email: string): Promise<JwtTokens> {

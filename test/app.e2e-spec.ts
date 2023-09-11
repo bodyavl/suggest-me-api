@@ -49,14 +49,16 @@ describe('AppController (e2e)', () => {
         access_token: expect.any(String),
         refresh_token: expect.any(String),
       });
+      access_token = res.body.access_token;
+      refresh_token = res.body.refresh_token;
     });
     it('/signout', async () => {
-      const res = await request(app.getHttpServer()).post('/auth/signout').set("Authorization", `Bearer ${refresh_token}`);
+      const res = await request(app.getHttpServer()).delete('/auth/signout').set("Authorization", `Bearer ${refresh_token}`);
       expect(res.statusCode).toEqual(200);
     });
     it('/signout with wrong token', async () => {
-      const res = await request(app.getHttpServer()).post('/auth/signout').set("Authorization", `Bearer ${refresh_token}`);
-      expect(res.statusCode).toEqual(400);
+      const res = await request(app.getHttpServer()).delete('/auth/signout').set("Authorization", `Bearer ${refresh_token}`);
+      expect(res.statusCode).toEqual(401);
     });
     it('/signin', async () => {
       const res = await request(app.getHttpServer()).post('/auth/signin').send({
@@ -122,14 +124,15 @@ describe('AppController (e2e)', () => {
       movieId = res.body[0].id
     });
     it('/, with genre query', async () => {
+      const genre = 'Action'
       const res = await request(app.getHttpServer()).get('/movie').query({
-        genre: 'Action'
+        genre
       });
       expect(res.statusCode).toEqual(200);
       expect(res.body).toBeInstanceOf(Array);
       expect(res.body).toHaveLength(8)
       for(let movie of res.body) {
-        expect(movie).toHaveProperty('genre', 'Action')
+        expect(movie.genres).toContain(genre)
       }
     });
     it('/:id', async () => {
