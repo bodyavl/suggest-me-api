@@ -5,11 +5,11 @@ config();
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: 'localhost',
-  username: 'postgres',
-  password: '123',
-  port: +process.env.DATABASE_PORT,
-  database: 'postgres',
+  host: process.env.POSTGRES_HOST,
+  username: process.env.POSGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  port: +process.env.POSTGRES_PORT,
+  database: process.env.POSTGRES_DATABASE,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: ['dist/db/migrations/*.js'],
 };

@@ -25,7 +25,7 @@ describe('AppController (e2e)', () => {
 
     await app.init();
     
-    await setTimeout(10000)
+    await setTimeout(15000)
   }, 20000);
 
   afterAll(async () => {
