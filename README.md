@@ -28,8 +28,17 @@
 
 ## Installation
 
+Install Docker https://www.docker.com/products/docker-desktop/
+
 ```bash
 $ npm install
+
+$ cp .env.example .env
+#fill all the variables values in .env file
+
+$ npm run db:dev:up
+
+$ npm run migration:run
 ```
 
 ## Running the app
@@ -50,6 +59,10 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
+
+$ cp .env.example .env.test
+#fill all the variables values in .env file
+#provide 5433 for POSTGRES_PORT (this is test db port in docker)
 
 # e2e tests
 $ npm run test:e2e
