@@ -87,6 +87,7 @@ describe('AppController (e2e)', () => {
       });
       expect(res.statusCode).toEqual(403);
     });
+    
     it('/tokens', async () => {
       const res = await request(app.getHttpServer())
         .get('/auth/tokens')
@@ -110,18 +111,13 @@ describe('AppController (e2e)', () => {
 
   describe('/movie', () => {
     let movieId
-    it('/, without auth', async () => {
+    let man_suggestions;
+    it('/', async () => {
       const res = await request(app.getHttpServer()).get('/movie');
       expect(res.statusCode).toEqual(200);
       expect(res.body).toBeInstanceOf(Array);
       expect(res.body).toHaveLength(8)
-    });
-    it('/, with auth', async () => {
-      const res = await request(app.getHttpServer()).get('/movie').set('Authorization', `Bearer ${access_token}`);
-      expect(res.statusCode).toEqual(200);
-      expect(res.body).toBeInstanceOf(Array<Movie>);
-      expect(res.body).toHaveLength(8)
-      movieId = res.body[0].id
+
     });
     it('/, with genre query', async () => {
       const genre = 'Action'
@@ -134,6 +130,50 @@ describe('AppController (e2e)', () => {
       for(let movie of res.body) {
         expect(movie.genres).toContain(genre)
       }
+    });
+    it('/, with auth', async () => {
+      const res = await request(app.getHttpServer()).get('/movie').set('Authorization', `Bearer ${access_token}`);
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Array<Movie>);
+      expect(res.body).toHaveLength(8)
+      movieId = res.body[0].id
+
+      const statRes = await request(app.getHttpServer()).get('/user/stat').set('Authorization', `Bearer ${access_token}`);
+      expect(statRes.statusCode).toEqual(200)
+      expect(statRes.body).toBeInstanceOf(Object)
+      expect(statRes.body.suggestions).toBeGreaterThan(0)
+    });
+    it('/ with auth and manual query', async () => {
+      const res = await request(app.getHttpServer()).get('/movie').set('Authorization', `Bearer ${access_token}`).query({
+        manual: true
+      });
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Array);
+      expect(res.body).toHaveLength(8)
+
+      const statRes = await request(app.getHttpServer()).get('/user/stat').set('Authorization', `Bearer ${access_token}`);
+      man_suggestions = statRes.body.man_suggestions
+      expect(statRes.statusCode).toEqual(200)
+      expect(statRes.body).toBeInstanceOf(Object)
+      expect(man_suggestions).toBeGreaterThan(0)
+    });
+    it('/ with auth, manual and genre query', async () => {
+      const genre = 'Action'
+      const res = await request(app.getHttpServer()).get('/movie').set('Authorization', `Bearer ${access_token}`).query({
+        manual: true,
+        genre
+      });
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Array);
+      expect(res.body).toHaveLength(8)
+      for(let movie of res.body) {
+        expect(movie.genres).toContain(genre)
+      }
+
+      const statRes = await request(app.getHttpServer()).get('/user/stat').set('Authorization', `Bearer ${access_token}`);
+      expect(statRes.statusCode).toEqual(200)
+      expect(statRes.body).toBeInstanceOf(Object)
+      expect(statRes.body.man_suggestions).toBeGreaterThan(0)
     });
     it('/:id', async () => {
       const res = await request(app.getHttpServer()).get(`/movie/${movieId}`);
