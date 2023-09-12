@@ -34,8 +34,8 @@ Install Docker https://www.docker.com/products/docker-desktop/
 $ npm install
 
 $ cp .env.example .env
-#fill all the variables values in .env file
-(you should leave those which start with POSTGRES as they are unless you make changes in docker-compose.yml file)
+#fill all the variables values in .env file except those which start with POSTGRES
+#unless you make chages to postgres to docker-compose.yml
 
 $ npm run db:dev:up
 
