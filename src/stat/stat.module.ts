@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { StatService } from './stat.service';
-import { StatController } from './stat.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Stat } from './entities';
-import { AccessTokenStrategy } from '../auth/strategy';
 
 @Module({
+  exports: [StatService],
   imports: [TypeOrmModule.forFeature([Stat])],
-  controllers: [StatController],
-  providers: [StatService, AccessTokenStrategy],
+  providers: [StatService],
 })
 export class StatModule {}
