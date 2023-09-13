@@ -14,7 +14,7 @@ export class MovieService implements OnModuleInit {
   ) {}
 
   async findAll(genre: string) {
-    const where = genre && genre === 'Any' ? 'movie.genres @> :genres' : ''
+    const where = genre && genre !== 'Any' ? 'movie.genres @> :genres' : ''
     const randomMovies = await this.movieRepository
       .createQueryBuilder('movie')
       .where(where, {genres: [genre]})
