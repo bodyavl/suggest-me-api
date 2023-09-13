@@ -1,2 +1,2 @@
 export * from './signIn.dto'
-export * from './signup.dto'
+export * from './signUp.dto'
