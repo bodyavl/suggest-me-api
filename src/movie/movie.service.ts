@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './entities';
@@ -40,6 +40,7 @@ export class MovieService implements OnModuleInit {
     const stat = await this.statRepository.findOneBy({
       user: { id: userId },
     });
+    if(!stat) throw new UnauthorizedException()
 
     let { movies, tv_shows, suggestions, man_suggestions } = stat;
 
