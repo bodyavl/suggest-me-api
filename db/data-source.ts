@@ -6,7 +6,7 @@ config();
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
-  username: process.env.POSGRES_USER,
+  username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   port: +process.env.POSTGRES_PORT,
   database: process.env.POSTGRES_DATABASE,

@@ -14,10 +14,15 @@ async function bootstrap() {
     .setTitle('Suggest me api')
     .setDescription('The api for sugget me website')
     .setVersion('1.0')
+    .addBearerAuth({type: 'http'}, 'access_token')
+    .addBearerAuth({type: 'http'}, 'refresh_token')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  ;
   SwaggerModule.setup('api', app, document);
 
   await app.listen(5000);
 }
 bootstrap();
+
+

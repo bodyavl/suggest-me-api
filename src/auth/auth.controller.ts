@@ -29,7 +29,7 @@ export class AuthController {
 
   @ApiOkResponse({type: JwtTokens})
   @ApiForbiddenResponse({description: 'If refresh token is not valid'})
-  @ApiBearerAuth('refresh token')
+  @ApiBearerAuth('refresh_token')
   @UseGuards(RefreshTokenGuard)
   @Get('tokens')
   async updateTokens(
@@ -41,7 +41,7 @@ export class AuthController {
 
   @ApiOkResponse()
   @ApiUnauthorizedResponse()
-  @ApiBearerAuth('refresh token')
+  @ApiBearerAuth('refresh_token')
   @UseGuards(RefreshTokenGuard)
   @Delete('signout')
   async signOut(@GetUser('id') id: number, @GetUser('refresh_token') refresh_token: string) {
