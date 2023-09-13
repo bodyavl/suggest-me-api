@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entities';
 import { AccessTokenStrategy } from '../auth/strategy';
 import { Stat } from '../stat/entities';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Movie, Stat])],
+  imports: [TypeOrmModule.forFeature([Movie, Stat]), JwtModule.register({})],
   controllers: [MovieController],
   providers: [MovieService, AccessTokenStrategy],
 })

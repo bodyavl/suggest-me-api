@@ -11,10 +11,11 @@ export class UserController {
 
   @ApiOkResponse()
   @ApiUnauthorizedResponse()
-  @ApiBearerAuth('Access token')
+  @ApiBearerAuth('access_token')
   @UseGuards(AccessTokenGuard)
   @Get('stat')
   async getStats(@GetUser('id') id: number) {
     return this.userService.getStats(id)
   }
+
 }
