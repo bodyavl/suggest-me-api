@@ -26,7 +26,7 @@ export class MovieService implements OnModuleInit {
     return randomMovies;
   }
 
-  async getMovies(genre: string) {
+  async getMovies(genre: string): Promise<Movie[]> {
     const where = genre && genre !== 'Any' ? 'movie.genres @> :genres' : '';
     const randomMovies = await this.movieRepository
       .createQueryBuilder('movie')
