@@ -21,8 +21,8 @@ export default registerAs<AuthConfing>('auth', () => {
   validateConfig(process.env, EnvironmentVariablesValidator);
 
   return {
-    accessSecret: process.env.ACCESS_JWT_SECRET,
-    accessExpires: process.env.ACCESS_JWT_EXPIRES_IN,
+    secret: process.env.ACCESS_JWT_SECRET,
+    expires: process.env.ACCESS_JWT_EXPIRES_IN,
     refreshSecret: process.env.REFRESH_JWT_SECRET,
     refreshExpires: process.env.REFRESH_JWT_EXPIRES_IN,
   };

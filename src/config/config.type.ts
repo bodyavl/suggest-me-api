@@ -11,8 +11,14 @@ export type DatabaseConfig = {
 };
 
 export type AuthConfing = {
-  accessSecret: string;
-  accessExpires: string;
+  secret: string;
+  expires: string;
   refreshSecret: string;
   refreshExpires: string;
+};
+
+export type AllConfigType = {
+  tmdb: TmdbConfing;
+  database: DatabaseConfig;
+  auth: AuthConfing;
 };

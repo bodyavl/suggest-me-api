@@ -9,10 +9,16 @@ import { JwtTokens } from './auth.types';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { UserService } from '../user/user.service';
+import { ConfigService } from '@nestjs/config';
+import { AllConfigType } from '../config/config.type';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private jwt: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private jwt: JwtService,
+    private configService: ConfigService<AllConfigType>,
+  ) {}
 
   async signIn(dto: SignInDto): Promise<JwtTokens> {
     const user = await this.userService.findOneBy({ email: dto.email });
@@ -63,12 +69,18 @@ export class AuthService {
 
     const [access_token, refresh_token] = await Promise.all([
       this.jwt.signAsync(data, {
-        expiresIn: process.env.ACCESS_JWT_EXPIRES_IN,
-        secret: process.env.ACCESS_JWT_SECRET,
+        expiresIn: this.configService.getOrThrow('auth.secret', {
+          infer: true,
+        }),
+        secret: this.configService.getOrThrow('auth.expires', { infer: true }),
       }),
       this.jwt.signAsync(data, {
-        expiresIn: process.env.REFRESH_JWT_EXPIRES_IN,
-        secret: process.env.REFRESH_JWT_SECRET,
+        expiresIn: this.configService.getOrThrow('auth.refreshSecret', {
+          infer: true,
+        }),
+        secret: this.configService.getOrThrow('auth.refreshExpires', {
+          infer: true,
+        }),
       }),
     ]);
 
