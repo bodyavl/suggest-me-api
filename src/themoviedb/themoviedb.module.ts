@@ -3,10 +3,9 @@ import { ThemoviedbService } from './themoviedb.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from '../movie/entities';
 
-@Global()
 @Module({
+  exports: [ThemoviedbService],
   imports: [TypeOrmModule.forFeature([Movie])],
   providers: [ThemoviedbService],
-  exports: [ThemoviedbService]
 })
 export class ThemoviedbModule {}

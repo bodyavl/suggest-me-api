@@ -1,12 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Stat } from '../stat/entities';
-import {
-  DeepPartial,
-  FindOptions,
-  FindOptionsWhere,
-  Repository,
-} from 'typeorm';
+import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { User } from './entities';
 import { StatService } from '../stat/stat.service';
 

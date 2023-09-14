@@ -8,14 +8,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './entities';
 import { ThemoviedbService } from '../themoviedb/themoviedb.service';
-import { Stat } from '../stat/entities';
 import { FindMoviesQueryDto } from './dto';
+import { StatService } from '../stat/stat.service';
 
 @Injectable()
 export class MovieService implements OnModuleInit {
   constructor(
     @InjectRepository(Movie) private movieRepository: Repository<Movie>,
-    @InjectRepository(Stat) private statRepository: Repository<Stat>,
+    private statService: StatService,
     private themoviedb: ThemoviedbService,
   ) {}
 
@@ -50,7 +50,7 @@ export class MovieService implements OnModuleInit {
     randomMovies: Movie[],
     isManual: boolean = false,
   ) {
-    const stat = await this.statRepository.findOneBy({
+    const stat = await this.statService.findOneBy({
       user: { id: userId },
     });
     if (!stat) throw new UnauthorizedException();
@@ -64,7 +64,7 @@ export class MovieService implements OnModuleInit {
     if (isManual) man_suggestions++;
     else suggestions++;
 
-    const newStats = await this.statRepository.update(
+    const newStats = await this.statService.update(
       {
         user: { id: userId },
       },

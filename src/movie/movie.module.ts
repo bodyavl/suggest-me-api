@@ -4,11 +4,17 @@ import { MovieController } from './movie.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entities';
 import { AccessTokenStrategy } from '../auth/strategy';
-import { Stat } from '../stat/entities';
 import { JwtModule } from '@nestjs/jwt';
+import { ThemoviedbModule } from '../themoviedb/themoviedb.module';
+import { StatModule } from '../stat/stat.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Movie, Stat]), JwtModule.register({})],
+  imports: [
+    TypeOrmModule.forFeature([Movie]),
+    JwtModule.register({}),
+    ThemoviedbModule,
+    StatModule,
+  ],
   controllers: [MovieController],
   providers: [MovieService, AccessTokenStrategy],
 })

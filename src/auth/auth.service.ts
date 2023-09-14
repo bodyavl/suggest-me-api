@@ -69,16 +69,17 @@ export class AuthService {
 
     const [access_token, refresh_token] = await Promise.all([
       this.jwt.signAsync(data, {
-        expiresIn: this.configService.getOrThrow('auth.secret', {
+        secret: this.configService.getOrThrow('auth.secret', { infer: true }),
+        expiresIn: this.configService.getOrThrow('auth.expires', {
           infer: true,
         }),
-        secret: this.configService.getOrThrow('auth.expires', { infer: true }),
       }),
+
       this.jwt.signAsync(data, {
-        expiresIn: this.configService.getOrThrow('auth.refreshSecret', {
+        secret: this.configService.getOrThrow('auth.refreshSecret', {
           infer: true,
         }),
-        secret: this.configService.getOrThrow('auth.refreshExpires', {
+        expiresIn: this.configService.getOrThrow('auth.refreshExpires', {
           infer: true,
         }),
       }),

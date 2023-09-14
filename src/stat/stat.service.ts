@@ -17,4 +17,12 @@ export class StatService {
     const stat = await this.statRepository.findOneBy(options);
     return stat;
   }
+
+  async update(
+    findOptions: FindOptionsWhere<Stat>,
+    updateQuery: DeepPartial<Stat>,
+  ) {
+    const stat = await this.statRepository.update(findOptions, updateQuery);
+    return stat;
+  }
 }
