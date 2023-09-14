@@ -27,9 +27,9 @@ export class ThemoviedbService {
           },
         );
         let movieIds = [];
-        movieRes.data.results.forEach((element) => {
-          movieIds.push(element.id);
-        });
+        for (let movie of movieRes.data.results) {
+          movieIds.push(movie.id);
+        }
         for (let movieId of movieIds) {
           try {
             const response = await axios.get(
@@ -71,7 +71,8 @@ export class ThemoviedbService {
               await movieRepository.save(newMovie);
             }
           } catch (error) {
-            if (error.code !== '23502') {};
+            if (error.code !== '23502') {
+            }
           }
         }
         const tvRes = await axios.get(
@@ -85,9 +86,9 @@ export class ThemoviedbService {
           },
         );
         let tvIds = [];
-        tvRes.data.results.forEach((element) => {
-          tvIds.push(element.id);
-        });
+        for (let tv of tvRes.data.results) {
+          tvIds.push(tv.id);
+        }
         for (let tvId of tvIds) {
           try {
             const response = await axios.get(
@@ -128,7 +129,8 @@ export class ThemoviedbService {
               await movieRepository.save(newTV);
             }
           } catch (error) {
-            if (error.code !== '23502') {};
+            if (error.code !== '23502') {
+            }
           }
         }
       }
