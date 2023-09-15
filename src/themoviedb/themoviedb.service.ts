@@ -12,7 +12,9 @@ export class ThemoviedbService {
   constructor(
     private configService: ConfigService<AllConfigType>,
     private readonly httpService: HttpService,
-  ) {}
+  ) {
+    this.addMoviesToDb = this.addMoviesToDb.bind(this);
+  }
 
   async runBackgroundFetching(movieRepository: Repository<Movie>) {
     const FETCHINGDELAY = this.configService.getOrThrow('tmdb.delay', {
