@@ -22,10 +22,9 @@ export class AuthService {
 
   async signIn(dto: SignInDto): Promise<JwtTokens> {
     const user = await this.userService.findOneBy({ email: dto.email });
-    if (!user) throw new ForbiddenException('No user with provided email');
 
     const isMatch = await argon.verify(user.hash, dto.password);
-    if (!isMatch) throw new ForbiddenException('Wrong password');
+    if (!isMatch) throw new BadRequestException('Wrong password');
 
     const tokens = await this.signTokens(user.id, user.email);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
@@ -34,11 +33,6 @@ export class AuthService {
 
   async signUp(dto: SignUpDto): Promise<JwtTokens> {
     const hash = await argon.hash(dto.password);
-    const userExists = await this.userService.findOneBy({
-      email: dto.email,
-    });
-    if (userExists)
-      throw new BadRequestException('User with provided email already exists');
 
     const user = await this.userService.create({
       email: dto.email,
@@ -47,7 +41,6 @@ export class AuthService {
     });
 
     const tokens = await this.signTokens(user.id, user.email);
-    console.log(tokens);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
 
     return tokens;

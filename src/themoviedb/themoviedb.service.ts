@@ -35,16 +35,15 @@ export class ThemoviedbService {
       FETCHINGDELAY,
       1,
       movieRepository,
-      this.httpService,
       FETCHINGDELAY,
       iterationCount,
       api_key,
     );
   }
+
   async addMoviesToDb(
     pageIteration = 1,
     movieRepository: Repository<Movie>,
-    httpService: HttpService,
     FETCHINGDELAY: number,
     iterationCount: number,
     api_key: string,
@@ -52,7 +51,7 @@ export class ThemoviedbService {
     if (pageIteration > 500) return;
     for (let i = 1; i < pageIteration + iterationCount; i++) {
       const movieRes = await firstValueFrom(
-        httpService
+        this.httpService
           .get<any>('/discover/movie', {
             params: {
               api_key,
@@ -67,19 +66,22 @@ export class ThemoviedbService {
             }),
           ),
       );
+
       let movieIds = [];
       for (let movie of movieRes.data.results) {
         movieIds.push(movie.id);
       }
+
       for (let movieId of movieIds) {
         try {
           const { data } = await firstValueFrom(
-            httpService.get(`/movie/${movieId}`, {
+            this.httpService.get(`/movie/${movieId}`, {
               params: {
                 api_key,
               },
             }),
           );
+
           const {
             id,
             title,
@@ -92,7 +94,9 @@ export class ThemoviedbService {
             overview,
             release_date,
           } = data;
+
           const genresArray = genres.map((genre) => genre.name);
+
           if (overview) {
             const newMovie = movieRepository.create({
               id,
@@ -115,11 +119,12 @@ export class ThemoviedbService {
           }
         }
       }
+
       const tvRes = await firstValueFrom(
-        httpService
+        this.httpService
           .get('/discover/tv', {
             params: {
-              api_key: process.env.TMDB_API_KEY,
+              api_key,
               with_genres: '28|27|18|35',
               page: i,
             },
@@ -131,17 +136,19 @@ export class ThemoviedbService {
             }),
           ),
       );
+
       let tvIds = [];
       for (let tv of tvRes.data.results) {
         tvIds.push(tv.id);
       }
+
       for (let tvId of tvIds) {
         try {
           const { data } = await firstValueFrom(
-            httpService
+            this.httpService
               .get(`/tv/${tvId}`, {
                 params: {
-                  api_key: process.env.TMDB_API_KEY,
+                  api_key,
                 },
               })
               .pipe(
@@ -163,7 +170,9 @@ export class ThemoviedbService {
             overview,
             release_date,
           } = data;
+
           const genresArray = genres.map((genre) => genre.name);
+
           if (overview) {
             const newTV = movieRepository.create({
               id,
@@ -186,12 +195,12 @@ export class ThemoviedbService {
         }
       }
     }
+
     setTimeout(
       this.addMoviesToDb,
       FETCHINGDELAY,
       pageIteration + iterationCount,
       movieRepository,
-      httpService,
       FETCHINGDELAY,
       iterationCount,
       api_key,
