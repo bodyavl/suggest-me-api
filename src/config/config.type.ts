@@ -1,5 +1,7 @@
 export type TmdbConfing = {
-  api_key: string;
+  apiKey: string;
+  delay: number;
+  iterationCount: number;
 };
 
 export type DatabaseConfig = {
