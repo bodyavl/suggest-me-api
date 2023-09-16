@@ -6,7 +6,7 @@ import { DataSource } from 'typeorm';
 import { ValidationArguments } from 'class-validator/types/validation/ValidationArguments';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { dataSourceOptions } from '../../../db/data-source';
+import { dataSourceOptions } from '../../db/data-source';
 
 type ValidationEntity =
   | {

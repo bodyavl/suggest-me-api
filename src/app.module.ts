@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatModule } from './stat/stat.module';
 import { UserModule } from './user/user.module';
-import { dataSourceOptions } from '../db/data-source';
+import { dataSourceOptions } from './db/data-source';
 import authConfig from './config/auth.config';
 import databaseConfig from './config/database.config';
 import tmdbConfig from './config/tmdb.config';
