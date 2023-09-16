@@ -21,7 +21,9 @@ export class UserService {
   async create(user: DeepPartial<User>) {
     const newUser = this.userRepository.create(user);
     const savedUser = await this.userRepository.save(user);
+
     await this.statService.create({ user: savedUser });
+
     return savedUser;
   }
 
@@ -38,6 +40,8 @@ export class UserService {
           `array_remove("refresh_tokens", '${refresh_token}')`,
       },
     );
+
+    return updatedUser;
   }
 
   async updateRefreshTokens(id: number, tokens: string[]) {
@@ -45,15 +49,19 @@ export class UserService {
       { id },
       { refresh_tokens: tokens },
     );
+
+    return updatedUser;
   }
 
   async addRefreshToken(id: number, refresh_token: string) {
-    return this.userRepository.update(
+    const updatedUser = this.userRepository.update(
       { id },
       {
         refresh_tokens: () =>
           `array_append("refresh_tokens", '${refresh_token}')`,
       },
     );
+
+    return updatedUser;
   }
 }

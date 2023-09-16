@@ -28,6 +28,7 @@ export class MovieService implements OnModuleInit {
 
   async getMovies(genre: string): Promise<Movie[]> {
     const where = genre && genre !== 'Any' ? 'movie.genres @> :genres' : '';
+
     const randomMovies = await this.movieRepository
       .createQueryBuilder('movie')
       .where(where, { genres: [genre] })
@@ -42,6 +43,7 @@ export class MovieService implements OnModuleInit {
       .orderBy('RANDOM()')
       .take(8)
       .getMany();
+
     return randomMovies;
   }
 
@@ -53,6 +55,7 @@ export class MovieService implements OnModuleInit {
     const stat = await this.statService.findOneBy({
       user: { id: userId },
     });
+
     if (!stat) throw new UnauthorizedException();
 
     let { movies, tv_shows, suggestions, man_suggestions } = stat;
@@ -75,6 +78,7 @@ export class MovieService implements OnModuleInit {
         man_suggestions,
       },
     );
+
     return newStats;
   }
 
@@ -82,7 +86,9 @@ export class MovieService implements OnModuleInit {
     const movie = await this.movieRepository.findOneBy({
       id,
     });
+
     if (!movie) throw new NotFoundException();
+
     return movie;
   }
 

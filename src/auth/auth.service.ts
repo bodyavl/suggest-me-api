@@ -51,6 +51,7 @@ export class AuthService {
 
     if (!user.refresh_tokens.includes(refresh_token))
       throw new UnauthorizedException('refresh token is not valid');
+
     await this.userService.removeRefreshToken(id, refresh_token);
   }
 

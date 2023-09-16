@@ -49,6 +49,7 @@ export class ThemoviedbService {
     api_key: string,
   ) {
     if (pageIteration > 500) return;
+
     for (let i = 1; i < pageIteration + iterationCount; i++) {
       const movieRes = await firstValueFrom(
         this.httpService
@@ -158,6 +159,7 @@ export class ThemoviedbService {
                 }),
               ),
           );
+
           const {
             id,
             name,
@@ -187,6 +189,7 @@ export class ThemoviedbService {
               genres: genresArray,
               date: release_date,
             });
+
             await movieRepository.save(newTV);
           }
         } catch (error) {
