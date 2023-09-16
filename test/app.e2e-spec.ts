@@ -53,7 +53,7 @@ describe('AppController (e2e)', () => {
       access_token = res.body.access_token;
       refresh_token = res.body.refresh_token;
     });
-    it('/signup', async () => {
+    it('/signup, with existing email', async () => {
       const res = await request(app.getHttpServer()).post('/auth/signup').send({
         email: 'test@gmail.com',
         password: 'test',
@@ -67,7 +67,7 @@ describe('AppController (e2e)', () => {
         .set('Authorization', `Bearer ${refresh_token}`);
       expect(res.statusCode).toEqual(200);
     });
-    it('/signout with wrong token', async () => {
+    it('/signout, with wrong token', async () => {
       const res = await request(app.getHttpServer())
         .delete('/auth/signout')
         .set('Authorization', `Bearer ${refresh_token}`);
@@ -215,6 +215,12 @@ describe('AppController (e2e)', () => {
       expect(res.statusCode).toEqual(200);
       expect(res.body).toBeInstanceOf(Object);
       expect(res.body.suggestions).toBeGreaterThan(0);
+    });
+    it('/stat, with invalid token', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/user/stat')
+        .set('Authorization', `Bearer invalid_token`);
+      expect(res.statusCode).toEqual(401);
     });
   });
 });
