@@ -3,44 +3,47 @@
 Install Docker https://www.docker.com/products/docker-desktop/
 
 ```bash
-$ npm install
+
+$ npm i -g pnpm
+
+$ pnpm install
 
 $ cp .env.example .env
 #fill all the variables values in .env file except those which start with POSTGRES
 #unless you make chages to postgres to docker-compose.yml
 
-$ npm run db:dev:up
+$ pnpm run db:dev:up
 
-$ npm run migration:run
+$ pnpm run migration:run
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ pnpm run start
 
 # watch mode
-$ npm run start:dev
+$ pnpm run start:dev
 
 # production mode
-$ npm run start:prod
+$ pnpm run start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ pnpm run test
 
 $ cp .env.example .env.test
 #fill all the variables values in .env file
 #provide 5433 for POSTGRES_PORT (this is test db port in docker)
 
 # e2e tests
-$ npm run test:e2e
+$ pnpm run test:e2e
 
 # test coverage
-$ npm run test:cov
+$ pnpm run test:cov
 ```
 
